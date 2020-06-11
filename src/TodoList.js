@@ -1,9 +1,11 @@
 import React from "react";
 import 'antd/dist/antd.css'
+import axios from 'axios'
 import TodoListUI from './TodoListUI'
 
 import store from "./store";
-import {CHANGE_INPUT, ADD_ITEM, DELETE_ITEM} from './store/actionTypes'
+import {CHANGE_INPUT, ADD_ITEM, DELETE_ITEM, GET_LIST} from './store/actionTypes'
+
 
 class TodoList extends React.Component {
 
@@ -40,6 +42,18 @@ class TodoList extends React.Component {
             index
         }
         store.dispatch(action)
+    }
+    componentDidMount() {
+        axios.get('http://rap2.taobao.org:38080/app/mock/257682/v1/getList').then((res)=>{
+            let list = res.data.list;
+            const action = {
+                type:GET_LIST,
+                list
+            }
+            store.dispatch(action)
+        }).catch((err)=>{
+            console.log(err)
+        })
     }
 
     render() {
